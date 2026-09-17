@@ -1,0 +1,12 @@
+scikit-learn
+xgboost
+lightgbm
+shap
+pandas
+numpy
+imbalanced-learn
+mlflow
+matplotlib
+psycopg2-binary
+sqlalchemy
+python-dotenv
