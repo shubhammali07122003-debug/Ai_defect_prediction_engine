@@ -6,7 +6,7 @@ def setup_database():
     conn = sqlite3.connect("data/defect_engine.db")
     cursor = conn.cursor()
 
-    # Table 1: Commits (Rohan ke data extraction ke liye)
+    # Table 1: Commits 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS commits (
         commit_hash TEXT PRIMARY KEY,
@@ -17,7 +17,7 @@ def setup_database():
     )
     ''')
 
-    # Table 2: File Changes (Git churn track karne ke liye)
+    # Table 2: File Changes 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS file_changes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,7 +28,7 @@ def setup_database():
     )
     ''')
 
-    # Table 3: Static Code Metrics (Anuska ke static features ke liye)
+    # Table 3: Static Code Metrics 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS static_metrics (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -47,7 +47,7 @@ def mine_and_store_static_metrics(repo_base_path: str, csv_path: str, db_path: s
 
     df_changes = pd.read_csv(csv_path)
 
-    # Latest commit hash per file nikalte hain taaki valid commit link rahe
+    
     latest_file_commits = (
         df_changes.groupby("file_path")
         .first()
