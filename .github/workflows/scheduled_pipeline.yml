@@ -23,6 +23,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests pandas sqlalchemy psycopg2-binary python-dotenv lizard GitPython radon
 
+      - name: Ensure Target Repository Cloned
+        run: |
+          mkdir -p data/raw
+          if [ ! -d "data/raw/flask" ]; then
+            git clone https://github.com/pallets/flask.git data/raw/flask
+          fi
+
       - name: Execute Mining & Metrics Pipelines
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
