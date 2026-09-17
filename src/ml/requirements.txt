@@ -7,3 +7,6 @@ numpy
 imbalanced-learn
 mlflow
 matplotlib
+psycopg2-binary
+sqlalchemy
+python-dotenv
