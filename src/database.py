@@ -41,7 +41,7 @@ def setup_database():
 
     conn.commit()
     conn.close()
-    print("✅ Database successfully created: data/defect_engine.db")
+    print("Database successfully created: data/defect_engine.db")
 
 if __name__ == "__main__":
     setup_database()
