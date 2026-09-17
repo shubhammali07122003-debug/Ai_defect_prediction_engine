@@ -1,8 +1,13 @@
 import os
-import sqlite3
+import psycopg2
 import pandas as pd
 from radon.raw import analyze
 from radon.complexity import cc_visit
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 def calculate_file_metrics(file_abs_path: str):
     """
@@ -15,51 +20,62 @@ def calculate_file_metrics(file_abs_path: str):
         with open(file_abs_path, "r", encoding="utf-8", errors="ignore") as f:
             code = f.read()
 
-        # 1. Calculate LOC (Lines of Code)
         raw_stats = analyze(code)
         loc = raw_stats.loc
 
-        # 2. Calculate Cyclomatic Complexity
         blocks = cc_visit(code)
-        if blocks:
-            avg_complexity = sum(b.complexity for b in blocks) / len(blocks)
-        else:
-            avg_complexity = 0.0
+        avg_complexity = (sum(b.complexity for b in blocks) / len(blocks)) if blocks else 0.0
 
         return {
             "loc": int(loc),
             "cyclomatic_complexity": round(float(avg_complexity), 2)
         }
     except Exception as e:
-        print(f"Skipping {file_abs_path} due to error: {e}")
+        print(f"Skipping {file_abs_path}: {e}")
         return None
 
-def mine_and_store_static_metrics(repo_base_path: str, csv_path: str, db_path: str):
+def mine_and_store_static_metrics(repo_base_path: str, csv_path: str):
     """
-    Reads git_changes.csv, calculates static metrics for touched files,
-    and inserts records into the static_metrics table.
+    Reads git_changes.csv, calculates code metrics, and inserts them
+    directly into the live Neon PostgreSQL database.
     """
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"Source file changes CSV not found: {csv_path}")
 
-    if not os.path.exists(db_path):
-        raise FileNotFoundError(f"Database not found at {db_path}. Run database.py first.")
+    if not DATABASE_URL:
+        raise ValueError("DATABASE_URL not found in .env file.")
 
     df_changes = pd.read_csv(csv_path)
 
-    # Latest commit hash per file nikalte hain taaki valid commit link rahe
     latest_file_commits = (
         df_changes.groupby("file_path")
         .first()
         .reset_index()[["file_path", "commit_hash"]]
     )
 
-    print(f"Analyzing static metrics for {len(latest_file_commits)} unique files...")
-
-    conn = sqlite3.connect(db_path)
+    print(f"Connecting to Neon Cloud PostgreSQL...")
+    conn = psycopg2.connect(DATABASE_URL)
     cursor = conn.cursor()
 
+    # Ensure static_metrics table exists in Postgres
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS static_metrics (
+            id SERIAL PRIMARY KEY,
+            file_path TEXT,
+            commit_hash TEXT,
+            loc INTEGER,
+            cyclomatic_complexity REAL
+        );
+    """)
+    conn.commit()
+
+    print(f"Analyzing static metrics for {len(latest_file_commits)} files...")
     inserted_count = 0
+
+    insert_query = """
+        INSERT INTO static_metrics (file_path, commit_hash, loc, cyclomatic_complexity)
+        VALUES (%s, %s, %s, %s);
+    """
 
     for _, row in latest_file_commits.iterrows():
         rel_path = row["file_path"]
@@ -69,10 +85,7 @@ def mine_and_store_static_metrics(repo_base_path: str, csv_path: str, db_path: s
         metrics = calculate_file_metrics(full_path)
 
         if metrics:
-            cursor.execute("""
-                INSERT INTO static_metrics (file_path, commit_hash, loc, cyclomatic_complexity)
-                VALUES (?, ?, ?, ?)
-            """, (
+            cursor.execute(insert_query, (
                 rel_path,
                 commit_hash,
                 metrics["loc"],
@@ -81,15 +94,14 @@ def mine_and_store_static_metrics(repo_base_path: str, csv_path: str, db_path: s
             inserted_count += 1
 
     conn.commit()
+    cursor.close()
     conn.close()
 
-    print("\n--- Code Metrics Mining Completed ---")
-    print(f"Rows inserted into static_metrics table: {inserted_count}")
-    print(f"Target Database: {db_path}")
+    print("\n--- Live Neon DB Sync Completed ---")
+    print(f"Rows pushed to Cloud static_metrics: {inserted_count}")
 
 if __name__ == "__main__":
     REPO_DIR = "data/raw/flask"
     CSV_INPUT = "data/processed/git_changes.csv"
-    DB_PATH = "data/defect_engine.db"
 
-    mine_and_store_static_metrics(REPO_DIR, CSV_INPUT, DB_PATH)
+    mine_and_store_static_metrics(REPO_DIR, CSV_INPUT)
