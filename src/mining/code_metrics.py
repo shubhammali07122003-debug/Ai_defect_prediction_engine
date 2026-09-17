@@ -1,8 +1,25 @@
 import os
-import sqlite3
-import pandas as pd
+import subprocess
+import psycopg2
 from radon.raw import analyze
 from radon.complexity import cc_visit
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+def get_latest_commit_hash(repo_dir: str, file_rel_path: str) -> str:
+    """
+    Fetches the latest commit hash where the specific file was modified.
+    """
+    try:
+        cmd = ["git", "-C", repo_dir, "log", "-n", "1", "--pretty=format:%H", "--", file_rel_path]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        commit = result.stdout.strip()
+        return commit if commit else "HEAD"
+    except Exception:
+        return "HEAD"
 
 def calculate_file_metrics(file_abs_path: str):
     """
@@ -15,64 +32,76 @@ def calculate_file_metrics(file_abs_path: str):
         with open(file_abs_path, "r", encoding="utf-8", errors="ignore") as f:
             code = f.read()
 
-        # 1. Calculate LOC (Lines of Code)
         raw_stats = analyze(code)
         loc = raw_stats.loc
 
-        # 2. Calculate Cyclomatic Complexity
         blocks = cc_visit(code)
-        if blocks:
-            avg_complexity = sum(b.complexity for b in blocks) / len(blocks)
-        else:
-            avg_complexity = 0.0
+        avg_complexity = (sum(b.complexity for b in blocks) / len(blocks)) if blocks else 0.0
 
         return {
             "loc": int(loc),
             "cyclomatic_complexity": round(float(avg_complexity), 2)
         }
     except Exception as e:
-        print(f"Skipping {file_abs_path} due to error: {e}")
+        print(f"Skipping {file_abs_path}: {e}")
         return None
 
-def mine_and_store_static_metrics(repo_base_path: str, csv_path: str, db_path: str):
+def scan_and_refresh_all_metrics(repo_dir: str):
     """
-    Reads git_changes.csv, calculates static metrics for touched files,
-    and inserts records into the static_metrics table.
+    Recursively scans ALL Python files in the repository and
+    refreshes the static_metrics table in Neon DB.
     """
-    if not os.path.exists(csv_path):
-        raise FileNotFoundError(f"Source file changes CSV not found: {csv_path}")
+    if not os.path.exists(repo_dir):
+        raise FileNotFoundError(f"Target repository not found at: {repo_dir}")
 
-    if not os.path.exists(db_path):
-        raise FileNotFoundError(f"Database not found at {db_path}. Run database.py first.")
+    if not DATABASE_URL:
+        raise ValueError("DATABASE_URL missing in .env file.")
 
-    df_changes = pd.read_csv(csv_path)
-
+    print(f"1. Scanning full repository at '{repo_dir}' for Python source files...")
+    all_python_files = []
     
-    latest_file_commits = (
-        df_changes.groupby("file_path")
-        .first()
-        .reset_index()[["file_path", "commit_hash"]]
-    )
+    for root, _, files in os.walk(repo_dir):
+        # Skip git internal metadata and virtualenvs
+        if ".git" in root or "__pycache__" in root or ".venv" in root:
+            continue
+        for file in files:
+            if file.endswith(".py"):
+                full_path = os.path.join(root, file)
+                rel_path = os.path.relpath(full_path, repo_dir).replace(os.sep, "/")
+                all_python_files.append((rel_path, full_path))
 
-    print(f"Analyzing static metrics for {len(latest_file_commits)} unique files...")
+    print(f"Found {len(all_python_files)} total Python files across the codebase.")
 
-    conn = sqlite3.connect(db_path)
+    print("2. Connecting to Cloud Neon DB...")
+    conn = psycopg2.connect(DATABASE_URL)
     cursor = conn.cursor()
 
+    # Table ensure and clear old partial state
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS static_metrics (
+            id SERIAL PRIMARY KEY,
+            file_path TEXT,
+            commit_hash TEXT,
+            loc INTEGER,
+            cyclomatic_complexity REAL
+        );
+    """)
+    print("Flushing old partial metrics to avoid duplicate / inconsistent split data...")
+    cursor.execute("TRUNCATE TABLE static_metrics RESTART IDENTITY;")
+    conn.commit()
+
+    print("3. Computing LOC and Cyclomatic Complexity for all files...")
+    insert_query = """
+        INSERT INTO static_metrics (file_path, commit_hash, loc, cyclomatic_complexity)
+        VALUES (%s, %s, %s, %s);
+    """
+
     inserted_count = 0
-
-    for _, row in latest_file_commits.iterrows():
-        rel_path = row["file_path"]
-        commit_hash = row["commit_hash"]
-        full_path = os.path.join(repo_base_path, rel_path)
-
+    for rel_path, full_path in all_python_files:
         metrics = calculate_file_metrics(full_path)
-
         if metrics:
-            cursor.execute("""
-                INSERT INTO static_metrics (file_path, commit_hash, loc, cyclomatic_complexity)
-                VALUES (?, ?, ?, ?)
-            """, (
+            commit_hash = get_latest_commit_hash(repo_dir, rel_path)
+            cursor.execute(insert_query, (
                 rel_path,
                 commit_hash,
                 metrics["loc"],
@@ -81,15 +110,12 @@ def mine_and_store_static_metrics(repo_base_path: str, csv_path: str, db_path: s
             inserted_count += 1
 
     conn.commit()
+    cursor.close()
     conn.close()
 
-    print("\n--- Code Metrics Mining Completed ---")
-    print(f"Rows inserted into static_metrics table: {inserted_count}")
-    print(f"Target Database: {db_path}")
+    print("\n--- Neon DB Static Metrics Refreshed Successfully ---")
+    print(f"Total files processed and inserted: {inserted_count}")
 
 if __name__ == "__main__":
-    REPO_DIR = "data/raw/flask"
-    CSV_INPUT = "data/processed/git_changes.csv"
-    DB_PATH = "data/defect_engine.db"
-
-    mine_and_store_static_metrics(REPO_DIR, CSV_INPUT, DB_PATH)
+    TARGET_REPO = "data/raw/flask"
+    scan_and_refresh_all_metrics(TARGET_REPO)
