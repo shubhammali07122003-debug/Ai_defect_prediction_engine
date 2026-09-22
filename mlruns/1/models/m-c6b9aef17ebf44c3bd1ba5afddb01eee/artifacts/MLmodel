@@ -1,0 +1,23 @@
+artifact_path: file:D:/ai-defect-prediction-engine/mlruns/1/models/m-c6b9aef17ebf44c3bd1ba5afddb01eee/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.14.6
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.9.0
+    skops_trusted_types: null
+mlflow_version: 3.16.1
+model_id: m-c6b9aef17ebf44c3bd1ba5afddb01eee
+model_size_bytes: 10916
+model_uuid: m-c6b9aef17ebf44c3bd1ba5afddb01eee
+prompts: null
+run_id: d29cc3d84ba64ec88c726084eafaa7c5
+utc_time_created: '2026-09-22 07:36:33.545316'

@@ -1,0 +1,9 @@
+mlflow==3.16.1
+cryptography==49.0.0
+numpy==2.5.1
+pandas==3.0.5
+py-rattler==0.25.0
+rich==15.0.0
+scikit-learn==1.9.0
+scipy==1.18.0
+skops==0.15.0
