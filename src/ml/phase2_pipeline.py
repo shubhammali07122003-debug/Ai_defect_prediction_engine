@@ -94,19 +94,23 @@ def load_data():
     ).astype(int)
 
     # static_metrics has no date of its own -- join to file_changes on
-    # commit_hash (+ file_path, in case a commit touches a file more than once)
-    # to attach the actual commit date as the prediction point.
-    date_lookup = file_changes[[FC_COMMIT_COL, FC_FILE_COL, FC_DATE_COL]].drop_duplicates()
+    # commit_hash ALONE (not file_path) to get that commit's date. A
+    # commit_hash uniquely determines a timestamp regardless of which
+    # file we're looking at; static_metrics records files that EXISTED
+    # at that commit, not necessarily files CHANGED in it, so requiring
+    # file_path to also match under-counts rows significantly.
+    date_lookup = file_changes[[FC_COMMIT_COL, FC_DATE_COL]].drop_duplicates(subset=[FC_COMMIT_COL])
     static_metrics = static_metrics.merge(
         date_lookup,
-        left_on=[SM_COMMIT_COL, SM_FILE_COL],
-        right_on=[FC_COMMIT_COL, FC_FILE_COL],
+        left_on=[SM_COMMIT_COL],
+        right_on=[FC_COMMIT_COL],
         how="left",
     )
     missing_dates = static_metrics[FC_DATE_COL].isna().sum()
     if missing_dates:
-        print(f"WARNING: {missing_dates} static_metrics rows had no matching "
-              f"commit in file_changes and will be dropped.")
+        print(f"WARNING: {missing_dates} static_metrics rows reference a commit_hash "
+              f"not present in file_changes at all (a real mining gap, not a join bug) "
+              f"and will be dropped.")
         static_metrics = static_metrics.dropna(subset=[FC_DATE_COL])
 
     return file_changes, static_metrics
