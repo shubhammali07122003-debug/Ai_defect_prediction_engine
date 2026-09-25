@@ -121,9 +121,30 @@ def predict_defect(data: PredictRequest):
             if expected_features:
                 input_df = input_df[expected_features]
 
-            predictions = model.predict(input_df)
-            prob = float(predictions[0]) if hasattr(predictions, "__len__") else float(predictions)
-            is_defective = bool(prob >= 0.5)
+            # Extract raw model estimator for base prediction
+            raw_model = None
+            if py_model and hasattr(py_model, "python_model") and hasattr(py_model.python_model, "model"):
+                raw_model = py_model.python_model.model
+            elif py_model and hasattr(py_model, "sklearn_model"):
+                raw_model = py_model.sklearn_model
+
+            if raw_model and hasattr(raw_model, "predict_proba"):
+                prob_array = raw_model.predict_proba(input_df)
+                base_prob = float(prob_array[0][1]) if prob_array.ndim == 2 else float(prob_array[0])
+            else:
+                predictions = model.predict(input_df)
+                base_prob = float(predictions[0]) if hasattr(predictions, "__len__") else float(predictions)
+
+            # Risk-calibration boost based on input metrics severity
+            complexity_risk = min(0.35, (data.cyclomatic_complexity / 80.0))
+            defects_risk = min(0.40, (data.prior_defects * 0.08))
+            churn_risk = min(0.15, (data.churn_30d / 300.0))
+            loc_risk = min(0.10, (data.loc / 2000.0))
+
+            # Total risk score calculation
+            prob = min(0.99, base_prob + complexity_risk + defects_risk + churn_risk + loc_risk)
+
+            is_defective = bool(prob >= 0.50)
             source = "mlflow_model"
         else:
             # Safe Fallback Heuristic
