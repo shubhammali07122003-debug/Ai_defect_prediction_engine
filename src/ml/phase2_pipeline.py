@@ -26,6 +26,7 @@ Usage:
 
 import os
 import re
+import sys
 import pandas as pd
 import numpy as np
 import mlflow
@@ -38,6 +39,9 @@ from sklearn.metrics import (
     precision_score, recall_score, f1_score,
     roc_auc_score, average_precision_score
 )
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "preprocessing"))
+from cleaning import clean_features, save_pipeline
 
 load_dotenv()
 
@@ -217,6 +221,12 @@ def main():
 
     X_train, y_train = train_df[feature_cols], train_df["defective"]
     X_test, y_test = test_df[feature_cols], test_df["defective"]
+
+    print("\nApplying standardized cleaning pipeline (imputation, outlier capping, scaling)...")
+    X_train, X_test, cleaning_pipeline = clean_features(X_train, X_test)
+    os.makedirs("artifacts", exist_ok=True)
+    save_pipeline(cleaning_pipeline, "artifacts/cleaning_pipeline.joblib")
+    print("  Cleaning pipeline fitted on train and saved to artifacts/cleaning_pipeline.joblib")
 
     print(f"\nTrain rows: {len(X_train)}  |  Test rows: {len(X_test)}")
 
