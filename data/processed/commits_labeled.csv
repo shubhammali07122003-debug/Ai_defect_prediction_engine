@@ -1,23 +1,146 @@
 commit_hash,author_name,commit_date,message,is_bug_fix
-75432d5f80a82d3882c045724a27f242991fa455,Shubham Mali,Thu Sep 17 22:52:42 2026 +0530,Add auto-clone step for target repository in GitHub Actions,0
-b1067ec0a569c7f08c9469480527c735a41d3e48,Shubham Mali,Thu Sep 17 22:48:01 2026 +0530,Add radon dependency to GitHub Actions pipeline,0
-4326fa54ab2afd48fd7c9c10f17d4729ac478d12,Shubham Mali,Thu Sep 17 22:44:14 2026 +0530,Fix GitHub Actions checkout version to v4 and setup-python to v5,1
-5f402daf98a20efb210ba5c0add265eed58e5ec1,Shubham Mali,Thu Sep 17 22:10:39 2026 +0530,Add GitHub Actions automated daily pipeline workflow,0
-bb1ec9029a4bb40be26424269b782f3558b08eff,RohanN-24,Thu Sep 17 21:17:24 2026 +0530,Update: code_metrics updated (Postgres Ingestion),0
-9ba767467ffe47323a84b320f5bbbce844580951,Shubham Mali,Thu Sep 17 12:25:54 2026 +0530,Add Phase 3 GitHub issue miner and sync to Neon DB,0
-a9572b353bd801a059b51315a5cb9709b26ff969,Shubham Mali,Thu Sep 17 12:09:33 2026 +0530,Remove embedded flask repo tracking,0
-bc720c4742b2ffaf7caeb80391f94e8ad209adac,Shubham Mali,Thu Sep 17 12:08:29 2026 +0530,Merge Anushka branch into Shubham with resolved gitignore,0
-4bcca73bcab895677204e03fdfe0ecce11e2eaa0,Anuska,Thu Sep 17 11:44:07 2026 +0530,Add Phase 2 bug labeling + baseline model pipeline with Postgres support,1
-43d5702b39fe82d26ca663bab279c5e6e053cdc7,Shubham Mali,Thu Sep 17 11:08:11 2026 +0530,Update database configuration for Cloud PostgreSQL and code metrics,0
-4e91208eabadc7ef19a5c4c356018e5351b68911,Shubham Mali,Thu Sep 17 10:11:59 2026 +0530,Update database script with latest metrics schema,0
-440e717e1c7025b0c8aa3f49534a56417bc47386,Shubham Mali,Mon Sep 14 08:09:43 2026 +0530,Merge branch 'Rohan' into Shubham,0
-b7505d2836308b1daac5422a47e1b95955bc7822,Shubham Mali,Mon Sep 14 08:00:04 2026 +0530,Rohan: Processed and verified static metrics in SQLite DB,0
-6b021eef84e54369d394d7c5333687f24d69a8a9,RohanN-24,Sun Sep 13 23:51:26 2026 +0530,Add code_metrics extractor script for static_metrics table,0
-53d965094e1c029a7f892c8314507b0678ae2f17,Shubham Mali,Sun Sep 13 11:30:33 2026 +0530,"Rohan: Ingested 2,497 mined file changes into SQLite database",0
-cedfe1525affc57ce340059eb22b6a599fe8d227,RohanN-24,Sun Sep 13 00:51:01 2026 +0530,Implement git log miner for commit and file churn extraction,0
-baf07734cdc6418e40dd831572bb5cd9470b3a07,RohanN-24,Sun Sep 13 00:15:36 2026 +0530,Complete Phase 1 repo inspection and mining qualification,0
-59c69e984aeaf4274bd4bd5417803978ca98f7ce,Shubham Mali,Sat Sep 12 17:28:56 2026 +0530,Shubham: Finalized data dictionary and initial EDA report outline,0
-c94e88467b1f03a21262ef2449d5fa9f4889a9ae,Anuska,Thu Sep 10 09:05:29 2026 +0530,Add ML environment setup and toy pipeline sanity check,0
-d63f35545dcfc68f01a6daabdc8d2403f5201cf2,Shubham Mali,Wed Sep 9 11:14:13 2026 +0530,Ignore local SQLite database file,0
-05212acb99d2b9dbdbcb337fabb46e4027f39edc,Shubham Mali,Wed Sep 9 11:12:55 2026 +0530,Added initial SQLite database setup script,0
-7f7d13113c7fdc6381261a831d1deeea2a8bb168,Shubham Mali,Wed Sep 9 11:08:45 2026 +0530,Initial commit with README,0
+d73fa1cdcbd8b1465c151db8924ba58b1dd14e35,David Lord,Tue Sep 8 09:40:33 2026 -0700,fix docs ref,1
+d318b683471101618febed18996405ad26462110,David Lord,Sun Aug 16 11:35:31 2026 -0700,explain seek,0
+2a8a38b051fc248865730bf3511bf2e2ea325e81,David Lord,Tue Aug 11 15:32:49 2026 -0700,support query in methodview,0
+d8eaaba824655046958d1a97f11780de460c3271,David Lord,Tue Aug 11 13:19:14 2026 -0700,add `app.query` route decorator (#6133),1
+89992954ec71b594b1b911f98977cdc8ad46a057,David Lord,Tue Aug 11 13:15:18 2026 -0700,add app.query route decorator,0
+3596b1ab61cea85edb8970e83ff61daa073facf8,David Lord,Tue Aug 11 12:56:09 2026 -0700,add entry,0
+05e9c6bd630ecf4ec0ec884b1fc7901663737bc7,David Lord,Tue Aug 11 12:48:40 2026 -0700,"Fix `.partition("":"")` usage on potential IPv6 addresses (#6096)",1
+7203feabf723edae0286ae5dc64fec8ac4c91735,lkk7,Tue Jul 14 16:42:09 2026 +0200,Fix IPv6 server name parsing,1
+de8429ffda8cfb54db175529e2bae72a24e1fa7e,lkk7,Tue Jul 14 16:40:58 2026 +0200,Fix IPv6 session transactions,1
+514fc6b3e8402e4c646d5284e97a4f0ab50a7c4b,David Lord,Tue Aug 11 12:43:58 2026 -0700,Merge branch 'stable',0
+81798b406f97ffe4795d2c9fc18db7db744a96dc,David Lord,Tue Aug 11 11:59:41 2026 -0700,fix typos,1
+8b4fd5d18611e63080b826ecfefe8659dba7d2e4,David Lord,Mon Aug 10 16:45:01 2026 -0700,use header properties,0
+6a2f545bfd8ed31e19066a299296917e034aca58,David Lord,Thu Jul 30 10:29:33 2026 -0700,Merge branch 'stable',0
+30d1c5d6fcbd62d9e902209d7a207f7510e9f5dc,David Lord,Thu Jul 30 10:27:54 2026 -0700,test Python 3.15,0
+ff6fa22f4d961a28567db11430208b964620f511,David Lord,Thu Jul 30 10:25:54 2026 -0700,update dependencies,0
+548994ea0c61465574cbfdd636a894a692f54b94,David Lord,Thu Jul 30 10:05:04 2026 -0700,Replace the use of private `monkeypatch` fixture API (#6095),1
+5ce121dd841e2dc2594d0ed3954278f4101d3521,Michał Górny,Tue Jul 14 12:07:37 2026 +0200,Replace the use of private `monkeypatch` fixture API,0
+8285adf5a4f572dbf7a0a3b8f3a96ca0b19c50a4,David Lord,Wed Jun 10 11:03:21 2026 -0700,update dev dependencies,0
+36e4a824f340fdee7ed50937ba8e7f6bc7d17f81,David Lord,Sun May 31 07:42:46 2026 -0700,Any for  CertParamType type,0
+954f5684e4841aad84a8eec7ace7b81a0d3f6831,David Lord,Mon May 18 16:35:44 2026 -0700,update dev dependencies,0
+9fcd34c9f3065640bd1cd86234216ca068633fb9,David Lord,Wed May 13 07:37:53 2026 -0700,Merge branch 'stable',0
+1d49747264554dee31f5627d4249d09aaaeced39,David Lord,Wed May 13 07:37:21 2026 -0700,update flask-mongoengine link,0
+7374c85ddefc3f4b177a698ab9f0cbb6a5c0b392,David Lord,Sat May 2 05:59:12 2026 -0700,remove leftover setuptools,0
+dcbede0cb00df32e7f1895e19e37d5f40a75d1f6,David Lord,Fri May 1 20:58:56 2026 -0700,autoescape selection uses case-insensitive comparison (#6013),1
+9368fb3f3c52d74534d14c1bef03c79c103356cd,David Lord,Fri May 1 20:53:36 2026 -0700,case-insensitive comparison,0
+06ea505ce2b2042af26e96d35ebf159af7c0869d,David Lord,Fri May 1 20:17:23 2026 -0700,separate copy per call,0
+2ac89889f4cc330eabd50f295dcef02828522c69,David Lord,Wed Apr 8 21:04:03 2026 -0700,Merge branch 'stable',0
+689362089edd09b6d68f7cfe99075e1345e0fede,David Lord,Wed Apr 8 21:01:29 2026 -0700,fix typo,1
+258d68b6ff5e2244386540f48b48bab90d6ab827,David Lord,Sun Apr 5 12:32:14 2026 -0700,Merge branch 'stable',0
+a31e6b73469cb2bf7eb8f70b5ff21f710fd2e23c,David Lord,Sun Apr 5 12:31:01 2026 -0700,remove werkzeug host tests,0
+e4e4bf6543ac1f132afddb1ffd0bf02bea4c93f7,David Lord,Sun Apr 5 11:24:48 2026 -0700,Merge branch 'stable',0
+b21425d6df207fec0c47e9563faa10a2819984ca,David Lord,Sun Apr 5 11:13:13 2026 -0700,reduce venv size,0
+83dbcb222a65a87741c9d96bb183f34528149269,David Lord,Fri Apr 3 15:59:16 2026 -0700,update dev dependencies,0
+7ef2946fb5151b745df30201b8c27790cac53875,David Lord,Tue Mar 24 06:55:57 2026 -0700,remove unicode host test (#5962),1
+91c6b3fecf36b1f04554e57cc4060ccb737a445d,David Lord,Tue Mar 24 06:47:30 2026 -0700,remove unicode host test,0
+4cae5d8e411b1e69949d8fae669afeacbd3e5908,David Lord,Sun Mar 8 16:21:50 2026 -0700,Merge branch 'stable',0
+a197702e2cbcdd43c0d09296b3cea02efe16e407,David Lord,Sun Mar 8 16:20:07 2026 -0700,update dev dependencies,0
+4774385abdc04d3b0d02dcbed6543bc100f23f6e,David Lord,Sun Mar 8 16:15:00 2026 -0700,add zizmor to scan workflows (#5945),1
+560c119e3dc33b35b9c57172fae521d99c2a1421,David Lord,Sun Mar 8 16:05:00 2026 -0700,add zizmor to scan workflows,0
+3a9d54f3da1de540adfdf6f1e2dea6fc0006e15d,David Lord,Wed Mar 4 07:36:21 2026 -0800,Merge branch 'stable',0
+a29f88ce6f2f9843bd6fcbbfce1390a2071965d6,David Lord,Wed Mar 4 07:36:09 2026 -0800,document that headers must be set before streaming,0
+c34d6e81fd8e405e6d4178bf24b364918811ef17,David Lord,Thu Feb 19 20:00:34 2026 -0800,all teardown callbacks are called despite errors (#5928),1
+fbb6f0bc4c60a0bada0e03c3480d0ccf30a3c1df,David Lord,Thu Feb 19 19:41:50 2026 -0800,all teardown callbacks are called despite errors,0
+7b0088693ece1bd3a9238a6fdf56ed8df7a4d43b,David Lord,Thu Feb 19 08:42:33 2026 -0800,fix typing,1
+a411a2434b09d9cbaa4074232b2c247d591bb655,David Lord,Thu Feb 19 08:35:48 2026 -0800,add back opening session on context push,0
+daca74d93a0edc458e618136de7d14803f06bc28,David Lord,Wed Feb 18 21:56:24 2026 -0800,Merge branch 'stable',0
+f00ad424ee3b050d382cc5b4aabb18afbb5e4ae7,David Lord,Wed Feb 18 21:01:53 2026 -0800,release version 3.1.3 (#5924),1
+22d924701a6ae2e4cd01e9a15bbaf3946094af65,David Lord,Wed Feb 18 19:41:55 2026 -0800,release version 3.1.3,0
+089cb86dd22bff589a4eafb7ab8e42dc357623b4,David Lord,Wed Feb 18 19:35:58 2026 -0800,Merge commit from fork,0
+c17f379390731543eea33a570a47bd4ef76a54fa,David Lord,Wed Feb 18 19:02:54 2026 -0800,request context tracks session access,0
+27be9338405382445a7cb01151e084559b98d602,David Lord,Wed Feb 18 14:52:52 2026 -0800,start version 3.1.3,0
+d98eb69a354158252854ed4a5c9778e03d089191,David Lord,Thu Feb 12 13:11:01 2026 -0800,revert cli test change,0
+12e95c93b488725f80753f34b2e0d24838ca4646,David Lord,Thu Feb 12 13:07:50 2026 -0800,fix provide_automatic_options override (#5917),1
+e82db2ca3a22c9614c1987392c9cfaa8c6ce99ad,David Lord,Thu Feb 12 13:03:03 2026 -0800,fix provide_automatic_options override,1
+d3b78fd18a8d9e224cb9ef58a23cec9b1ffc9ce9,David Lord,Fri Feb 6 13:22:54 2026 -0800,Merge remote-tracking branch 'origin/stable',0
+663198d7b453ffdbe86d0e0238b1feafde6ce569,David Lord,Tue Feb 3 10:22:19 2026 -0800,update dev dependencies,0
+976459f7cb35c8c3abc3a6e6a2728d76d1a0a5f2,David Lord,Tue Feb 3 10:20:49 2026 -0800,fix editable werkzeug,1
+5e621a2801daf95be6d208da9dcc287bb251f63c,David Lord,Tue Feb 3 10:19:45 2026 -0800,update domain matching tests for Werkzeug 3.2,0
+4e652d3f68b90d50aa2301d3b7e68c3fafd9251d,David Lord,Wed Jan 28 07:43:00 2026 -0800,Abort if the instance folder cannot be created (#5903),1
+3d03098a97ddc6a908aa4a50c2ef7381f8297d0a,Markus Heidelberg,Tue Jan 20 14:16:17 2026 +0100,Abort if the instance folder cannot be created,0
+798e006f435887adceb6aab9b57cde8e20276793,David Lord,Sun Jan 25 10:38:42 2026 -0800,Merge branch 'stable',0
+407eb76b27884848383a37c7274654f0271e4bc4,David Lord,Sun Jan 25 10:35:12 2026 -0800,document using gevent for async (#5900),1
+ac5664d2281533eacafd64f5cc7d5edcdaccab60,David Lord,Sun Jan 25 10:31:31 2026 -0800,document using gevent for async,0
+23df07d799f0bed3feb5beb9e5633651687da92b,David Lord,Sat Jan 24 19:55:36 2026 -0800,Merge branch 'stable',0
+4b8bde97d4fa3486e18dce21c3c5f75570d50164,David Lord,Sat Jan 24 19:53:11 2026 -0800,deprecate `should_ignore_error` (#5899),1
+0292047b22c82921dcf165322d93a0b988328c2e,David Lord,Sat Jan 24 19:52:11 2026 -0800,remove unused ruff check rule,0
+c77a5203438fe772d41f6a47303ad3f57a4efe6d,David Lord,Sat Jan 24 19:50:30 2026 -0800,deprecate should_ignore_error,0
+9b74a90dd3c47f792734823e8793ac36f38bc4dd,David Lord,Sat Jan 24 19:11:02 2026 -0800,fix codespell findings,1
+5880befcd22490c40f3c63d6178427f7753672c1,David Lord,Sat Jan 24 19:05:26 2026 -0800,Merge branch 'stable',0
+4f79d5b59a56bc4356a97f2e81a35f98cb18d7b3,David Lord,Sat Jan 24 19:04:07 2026 -0800,Increase required flit_core version to 3.11 (#5865),1
+fe3b215d3ade4db68262dae1a3cdc464a1fc524f,Markus Heidelberg,Wed Dec 17 15:44:15 2025 +0100,Increase required flit_core version to 3.11,0
+5559ef42b5334075cbde82b2870ca725ac606fa4,David Lord,Sat Jan 24 19:00:23 2026 -0800,pre-commit: Add codespell (#5844),1
+3709c4a9a87e6ce8c26dc4a951e1df52ac9ecad0,David Lord,Sat Jan 24 18:58:45 2026 -0800,update ruff hook and noqa,0
+709f83f6a32da8cdaec196d7b785ab6827322008,Christian Clauss,Wed Nov 5 18:13:26 2025 +0100,pre-commit: Add codespell,0
+30da640ffe23b6e461fa91d387ffea6b9d9fa847,ADITYA SAH,Sun Jan 25 08:16:56 2026 +0530,clarify 415 vs 400 errors for request.json (#5827),1
+25642fd1fd65985fc98f95e64bc2c7ff353d6c2b,David Lord,Sat Jan 24 18:25:31 2026 -0800,fix annotation for select_jinja_autoescape (#5808),1
+809d5a8869d4ffe8656680b2438b10f7c8845613,David Lord,Sat Jan 24 17:18:35 2026 -0800,redirect defaults to 303 (#5898),1
+eca5fd1dfdc614c2df876cc32018a7d71f84ea82,David Lord,Sat Jan 24 16:50:54 2026 -0800,redirect defaults to 303,0
+eb58d862cc4a8f31a369b6e9ad1724e9e642f13f,David Lord,Sat Jan 24 17:15:54 2026 -0800,Merge branch 'stable',0
+64dd0809c2fc732ed30539235232a268f9bd96ac,David Lord,Sat Jan 24 17:14:20 2026 -0800,update dev dependencies,0
+97bddc1f61a59522386d36ec37b2b220a01de262,David Lord,Mon Jan 5 08:49:46 2026 -0800,update dev dependencies,0
+ad68a12645d96fe51558da13e18544ba458d7af0,David Lord,Fri Nov 28 11:05:47 2025 -0800,drop experimental 3.13t test env,0
+2579ce9f18e67ec3213c6eceb5240310ccd46af8,David Lord,Mon Nov 17 10:05:51 2025 -0800,Merge branch 'stable',0
+607d1948b8747776f4a45d5b7c7eaeb57b6b9f80,David Lord,Mon Nov 17 10:05:39 2025 -0800,split free threading envs,0
+218880c7fdedee139ac09caaf93da469b4dba14c,David Lord,Mon Nov 17 10:03:42 2025 -0800,Merge branch 'stable',0
+917000097fc17875104176e2c71318ab25c508c3,David Lord,Mon Nov 17 10:02:53 2025 -0800,test py3.14,0
+96a01e420b741c59af59301f15612fde39bfb39d,David Lord,Mon Nov 17 09:45:56 2025 -0800,Merge branch 'stable',0
+da6d075dfde71b2e2a64f39b29ba957d5ffb00b0,David Lord,Mon Nov 17 09:43:40 2025 -0800,update dev dependencies,0
+70d04b5a2620705011e65f79ccfd52caa86f5d6a,David Lord,Mon Nov 17 08:49:53 2025 -0800,pass context through dispatch methods (#5818),1
+88a65bb374e87a18816a780dbd4ae69d307aa85c,Hynek Schlawack,Tue Oct 14 22:26:26 2025 +0200,Docs typo/markup fixes (#5829),1
+6a64969009bf1898bd302e6a9633f71942523f7f,David Lord,Fri Sep 19 16:58:48 2025 -0700,pass context through dispatch methods,0
+adf363679da2d9a5ddc564bb2da563c7ca083916,David Lord,Fri Sep 19 16:45:27 2025 -0700,merge app and request context (#5812),1
+c2705ffd9ce1dc8476cb29eaf5ff5d4c719852d9,David Lord,Fri Sep 12 14:52:03 2025 -0700,merge app and request context,0
+dbd4c2882593f6118103120aa96fa9acdf7deedb,subhajitsaha01,Sat Sep 6 22:01:22 2025 +0530,Changed the static annotated type of select_jinja_autoescape method in src/flask/sansio/app.py,0
+330123258e8c3dc391cbe55ab1ed94891ca83af3,David Lord,Tue Aug 19 14:09:56 2025 -0700,Merge branch 'stable',0
+85793d6c223dd845e8f218403a5ced83041d37e1,David Lord,Tue Aug 19 14:03:43 2025 -0700,release version 3.1.2 (#5800),1
+2c1b30d0503cfb064f1cb252e6614a06915a362a,David Lord,Tue Aug 19 13:42:11 2025 -0700,release version 3.1.2,0
+1292419ddfc6a14fc7f85b5ed7efcc2d215f1ad3,David Lord,Tue Aug 19 13:56:49 2025 -0700,Update GitHub Actions workflow for artifact handling (#5795),1
+4dd52ca9c768c9b6d04180f0547d6f4b6e34f211,Grant Birkinbine,Wed Aug 6 21:44:28 2025 -0700,Update GitHub Actions workflow for artifact handling,0
+55c62556571ee46a94da174643b50ece06edead4,David Lord,Tue Aug 19 13:41:24 2025 -0700,update dev dependencies,0
+ed1c9e953e2d67c0994e32e6c8d878291e36d4f7,David Lord,Tue Aug 19 12:36:00 2025 -0700,support call template_filter without parens (#5736),1
+edebd3704437f19b5b137eaffe97130fe817d144,David Lord,Tue Aug 19 12:29:47 2025 -0700,"rewrite docs, clean up typing for template decorators",0
+daf1510a4bda652ac2cfca03ec5567b03ddf8bf1,kadai0308,Sat May 17 12:17:18 2025 +0800,use template_filter without parens,0
+d8259eb11900285af9b80b0fa47f841174c054e3,David Lord,Tue Aug 19 10:43:16 2025 -0700,use Jinja name consistently,0
+38b4c1e19b50494cfcdc9332899e09b7fed34979,David Lord,Tue Aug 19 08:23:51 2025 -0700,refactor stream_with_context for async views (#5799),1
+9822a0351574790cb66c652fcc396ad7aa2b09d8,David Lord,Tue Aug 19 08:18:55 2025 -0700,refactor stream_with_context for async views,0
+49b7e7bc8fb69d605719991d1c0a99fcee689053,David Lord,Mon Aug 18 11:44:57 2025 -0700,security docs for TRUSTED_HOSTS (#5798),1
+b228ca3d87745b746d904a2108429617a814ffda,David Lord,Mon Aug 18 11:42:48 2025 -0700,security docs for TRUSTED_HOSTS,0
+ff64079a516c269f171ababf3d92b86886a62ffd,David Lord,Mon Aug 18 10:51:12 2025 -0700,update flask-talisman link,0
+1dfd7cd5555d9e62a2e198a131c366242e724b35,David Lord,Mon Aug 18 10:26:12 2025 -0700,use IO[bytes] instead of BinaryIO for wider compatibility (#5777),1
+d44f1c65239c3e33509224aa1931631243dbfa7f,Tero Vuotila,Wed Jul 16 12:21:50 2025 +0300,relax type hint for bytes io,0
+c56c5ec7c41e6ffd02516bf7cb80dd2ba9ba7aa3,David Lord,Mon Aug 18 10:20:06 2025 -0700,Docs: Fix escaping in HTML escaping example (#5742),1
+0f83958247e9eab1c7f62903601dfd5fe10c640f,Badhreesh,Wed May 21 20:35:11 2025 +0200,demonstrate escaping with query string,0
+7fea7cf15688b2a2712b01c45c9e3385ea382e67,David Lord,Mon Aug 18 10:08:07 2025 -0700,Update macOS UI reference to “System Settings” (#5723),1
+24824ff666e096c4c07d0b75a889088571afe4a6,David Lord,Mon Aug 18 09:56:39 2025 -0700,push preserved contexts in correct order (#5797),1
+53b8f08218796d95764c5252bccd8a50a173a6fb,David Lord,Mon Aug 18 09:41:03 2025 -0700,push preserved contexts in correct order,0
+5addaf833b2e8c7a616f89dd8ad5a44b07d7c000,David Lord,Mon Aug 18 09:42:21 2025 -0700,start version 3.1.2,0
+85c5d93cbd049c4bd0679c36fd1ddcae8c37b642,David Lord,Thu Jun 12 13:48:07 2025 -0700,Merge branch 'stable',0
+85cc71046475f9cb3efd17d496356795961249f9,David Lord,Thu Jun 12 13:46:49 2025 -0700,svg logo,0
+284273e3c5d8005bbb4b43c4d934409a5215886e,David Lord,Tue Jun 10 13:18:26 2025 -0700,Merge branch 'stable',0
+f17d9869489aea57d3fa05d5a3f1504fcf8e588c,David Lord,Tue Jun 10 13:18:15 2025 -0700,cleanup svg,0
+d6009c0aeb3c7fe3a841733e9dbdfbbb63b9bfd1,David Lord,Mon Jun 9 21:20:46 2025 -0700,Merge branch 'stable',0
+2b42a803a25e56a3a0e2af939ee5be4dcc3f29c8,David Lord,Mon Jun 9 21:20:36 2025 -0700,cleanup svg,0
+a7b67c99f922f26b1071a90994e14261dc0a6df2,David Lord,Mon Jun 9 14:33:26 2025 -0700,svg logo (#5757),1
+a758915893352f5986c6ee101cdf7e3b7a64fa28,David Lord,Mon Jun 9 14:31:31 2025 -0700,svg logo,0
+f04c5e696400badaa52b3450ded53e9091c2078a,David Lord,Sun Jun 8 09:52:11 2025 -0700,update dev dependencies,0
+c07b201ce336c3e49ae3b6fa81aaf4fb871d90ba,David Lord,Sun Jun 8 09:47:45 2025 -0700,Merge pull request #5754,1
+adeea0070700671230733879846417c80f4e62b1,David Lord,Sun Jun 8 09:43:05 2025 -0700,remove slsa provenance,0
+7bf3be8dfa5832ef03a3fd8f07f6736e770440e4,abhiram kamini,Thu May 1 21:10:57 2025 +0530,Update server.rst,0
+a42c4d54a3e5cd56c0700479ede75157a748acd6,David Lord,Tue May 20 12:30:04 2025 -0400,Fix global CONTRIBUTING link (#5737),1
+184ec3c5453e1156372085df35e8d922ce7e3559,AJ Jordan,Sun May 18 11:11:00 2025 -0400,Fix global CONTRIBUTING link,1
+bbaf13333fd00644313488243cfe547b13dcae78,David Lord,Tue May 13 08:09:39 2025 -0700,fix syntax,1
+57e72869486e89b45f6fd0a07cdd0adf80f5db1b,David Lord,Tue May 13 08:01:42 2025 -0700,release version 3.1.1 (#5730),1
+7fff56f5172c48b6f3aedf17ee14ef5c2533dfd1,David Lord,Tue May 13 07:51:12 2025 -0700,release version 3.1.1,0
+73d6504063bfa00666a92b07a28aaf906c532f09,David Lord,Tue May 13 07:46:54 2025 -0700,Merge commit from fork,0
+cbb6c36692f7d882e9026597624c0eb38e01f9cb,David Lord,Sat Mar 29 16:18:43 2025 -0700,update docs about fallback order,0
+fb54159861708558b5f5658ebdc14709d984361c,James Addison,Mon Mar 10 16:34:12 2025 +0000,secret key rotation: fix key list ordering,1
+941efd4a36ed0f27e13758874f95e3aa1d3ee163,David Lord,Sun May 11 18:04:35 2025 -0700,use uv (#5727),1
+0109e496f6ca68de29480fe6413e81b1d3f86aa9,David Lord,Sun May 11 17:45:03 2025 -0700,use uv,0
+e7851665071cb93b3c70b1e7103f82d1e6d01f5d,David Lord,Sun Mar 30 13:15:54 2025 -0700,Async Iterable Response (#5659),1
+410e5ab7ed0ef326fa8b5164a633863f137ffff5,CoolCat467,Mon Nov 18 12:55:14 2024 -0600,Accept `AsyncIterable` for responses,0
+bfffe87d4c2ea255b9a51432bebb3d28741245c4,David Lord,Sat Mar 29 15:57:16 2025 -0700,add ghsa links,0
+73ce26c3e822cdc2ccf99625619a50c91f163f8d,David Lord,Sat Mar 29 15:45:11 2025 -0700,remove tests about deprecated pkgutil.get_loader (#5702),1
+41ec5760a2c55a099c3a1733fdd36fbb1258a02b,David Lord,Sat Mar 29 15:42:58 2025 -0700,remove tests about deprecated pkgutil.get_loader,0
+2732c4db66763462c2795d2287b61d4f77031342,David Lord,Sat Mar 29 15:32:28 2025 -0700,add endpoint name in favicon example (#5701),1
