@@ -11,3 +11,5 @@ sqlalchemy
 python-dotenv
 joblib
 mlflow
+radon
+pydriller
