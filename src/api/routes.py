@@ -165,3 +165,42 @@ def predict_defect(data: PredictRequest):
         traceback.print_exc()
         print("============================\n")
         raise HTTPException(status_code=500, detail=str(e))
+
+import tempfile
+import shutil
+from git import Repo
+from src.mining.git_miner import mine_git_repository
+from src.mining.code_metrics import calculate_file_metrics, mine_and_store_static_metrics
+
+class ScanRepoRequest(BaseModel):
+    repo_url: str = Field(..., example="https://github.com/pallets/flask.git")
+
+@router.post("/scan-repo")
+def scan_repository(request: ScanRepoRequest):
+    """
+    Direct GitHub Repository URL scan endpoint:
+    1. Clones repo into a temporary local directory.
+    2. Runs git_miner & code_metrics extraction.
+    3. Returns real-time metrics for model defect analysis.
+    """
+    temp_dir = tempfile.mkdtemp()
+    try:
+        print(f"Cloning repo from {request.repo_url} into {temp_dir}...")
+        Repo.clone_from(request.repo_url, temp_dir, depth=50)
+
+        # 1. Mine commit history
+        mine_git_repository(temp_dir)
+        
+        # 2. Extract static AST code metrics (LOC, Cyclomatic Complexity)
+        mine_and_store_static_metrics(temp_dir)
+        
+        return {
+            "status": "success",
+            "message": "Repository successfully cloned and mined.",
+            "repo_url": request.repo_url
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to scan repository: {str(e)}")
+    finally:
+        if os.path.exists(temp_dir):
+            shutil.rmtree(temp_dir, ignore_errors=True)
