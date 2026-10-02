@@ -238,6 +238,9 @@
 
     <!-- JavaScript Engine -->
     <script>
+        // Render Backend Live URL
+        const API_BASE_URL = "https://ai-defect-prediction-api.onrender.com";
+
         function toggleTheme() {
             const htmlTag = document.documentElement;
             const icon = document.getElementById('themeIcon');
@@ -278,7 +281,7 @@
             statusDiv.innerText = "⏳ Cloning repository and parsing static metrics...";
 
             try {
-                const response = await fetch('/scan-repo', {
+                const response = await fetch(`${API_BASE_URL}/scan-repo`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ repo_url: repoUrl })
@@ -365,7 +368,7 @@
             predictBtn.innerText = "Analyzing...";
 
             try {
-                const res = await fetch('/predict', {
+                const res = await fetch(`${API_BASE_URL}/predict`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
