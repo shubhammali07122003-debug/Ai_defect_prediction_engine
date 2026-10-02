@@ -1,16 +1,12 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "builds": [
-    {
-      "src": "src/api/templates/index.html",
-      "use": "@vercel/static"
-    }
-  ],
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": "src/api/templates",
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/api/templates/index.html"
+      "dest": "/index.html"
     }
   ]
 }
