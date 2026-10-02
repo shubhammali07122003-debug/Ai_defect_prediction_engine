@@ -296,7 +296,7 @@
                     if (data.files && data.files.length > 0) {
                         renderHotspotsTable(data.files);
                     } else {
-                        generateScannedFilesDisplay(repoUrl);
+                        statusDiv.innerText = "⚠️ Scan completed, but no Python modules were returned.";
                     }
                 } else {
                     statusDiv.className = "mt-4 text-sm font-medium px-4 py-3 rounded-lg bg-rose-50 dark:bg-rose-900/40 border border-rose-200 dark:border-rose-500/40 text-rose-700 dark:text-rose-300";
@@ -316,7 +316,7 @@
             tbody.innerHTML = '';
 
             files.forEach(f => {
-                const prob = (f.defect_prob || 0.5) * 100;
+                const prob = (f.defect_probability || f.defect_prob || 0.5) * 100;
                 let badge = '<span class="px-2.5 py-1 rounded bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 font-bold text-xs">P3 Low</span>';
                 let probColor = 'text-emerald-600 dark:text-emerald-400';
 
@@ -333,25 +333,15 @@
                         <td class="px-4 py-3">${badge}</td>
                         <td class="px-4 py-3 font-mono text-xs text-slate-900 dark:text-white">${f.file_path}</td>
                         <td class="px-4 py-3 text-slate-700 dark:text-slate-300">${f.loc}</td>
-                        <td class="px-4 py-3 text-slate-700 dark:text-slate-300">${f.complexity}</td>
-                        <td class="px-4 py-3 text-slate-700 dark:text-slate-300">${f.churn || 0}</td>
+                        <td class="px-4 py-3 text-slate-700 dark:text-slate-300">${f.cyclomatic_complexity || f.complexity}</td>
+                        <td class="px-4 py-3 text-slate-700 dark:text-slate-300">${f.churn_30d || f.churn || 0}</td>
                         <td class="px-4 py-3 font-bold ${probColor}">${prob.toFixed(1)}%</td>
                         <td class="px-4 py-3 text-right">
-                            <button onclick="inspectFile('${f.file_path}', ${f.loc}, ${f.complexity}, ${f.churn || 0}, ${f.defects || 0})" class="text-xs bg-brand-600 hover:bg-brand-500 text-white px-3 py-1 rounded transition-all">Inspect</button>
+                            <button onclick="inspectFile('${f.file_path}', ${f.loc}, ${f.cyclomatic_complexity || f.complexity}, ${f.churn_30d || f.churn || 0}, ${f.prior_defects || f.defects || 0})" class="text-xs bg-brand-600 hover:bg-brand-500 text-white px-3 py-1 rounded transition-all">Inspect</button>
                         </td>
                     </tr>
                 `;
             });
-        }
-
-        function generateScannedFilesDisplay(repoUrl) {
-            const repoName = repoUrl.split('/').pop().replace('.git', '');
-            const dummyScannedFiles = [
-                { file_path: `${repoName}/main.py`, loc: 210, complexity: 18, churn: 95, defects: 3, defect_prob: 0.78 },
-                { file_path: `${repoName}/model.py`, loc: 145, complexity: 11, churn: 40, defects: 1, defect_prob: 0.52 },
-                { file_path: `${repoName}/utils.py`, loc: 65, complexity: 3, churn: 10, defects: 0, defect_prob: 0.15 }
-            ];
-            renderHotspotsTable(dummyScannedFiles);
         }
 
         async function handleSinglePredict(e) {
