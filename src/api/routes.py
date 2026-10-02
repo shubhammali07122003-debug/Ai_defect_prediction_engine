@@ -251,3 +251,13 @@ def scan_repository(request: ScanRepoRequest):
     finally:
         if os.path.exists(temp_dir):
             shutil.rmtree(temp_dir, ignore_errors=True)
+
+from src.ml.retrain_pipeline import run_automated_retraining
+
+@router.post("/api/retrain")
+def trigger_retraining():
+    success = run_automated_retraining()
+    if success:
+        return {"status": "success", "message": "Automated retraining completed successfully."}
+    else:
+        return {"status": "failed", "message": "Retraining failed or skipped due to insufficient data."}            
