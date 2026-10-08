@@ -9,6 +9,9 @@ from dotenv import load_dotenv
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+# Supported extensions tuple (Python + C++ + Web languages)
+SUPPORTED_EXTENSIONS = ('.py', '.cpp', '.hpp', '.h', '.js', '.ts', '.html', '.css')
+
 # Bug fix keywords regex
 BUG_REGEX = re.compile(
     r"\b(fix(es|ed|ing)?|bug(s)?|defect(s)?|patch(es|ed)?|resolve[s]?|closes?)\b|(#\d+)|(issue(s)?\s*#?\d+)",
@@ -26,7 +29,6 @@ def mine_git_repository(repo_path: str):
 
     print(f"1. Fetching entire full commit history from {repo_path}...")
 
-    # -n limit hata di hai aur --all lagaya hai complete history fetch karne ke liye
     log_cmd = [
         "git", "-C", repo_path, "log",
         "--all",
@@ -82,6 +84,11 @@ def mine_git_repository(repo_path: str):
                 parts = line.split("\t")
                 if len(parts) == 3:
                     added_str, deleted_str, file_path = parts
+                    
+                    # Filter files to include supported extensions only
+                    if not file_path.endswith(SUPPORTED_EXTENSIONS):
+                        continue
+
                     added = int(added_str) if added_str.isdigit() else 0
                     deleted = int(deleted_str) if deleted_str.isdigit() else 0
 
@@ -127,7 +134,6 @@ def push_to_neon_db(df_commits: pd.DataFrame, df_changes: pd.DataFrame):
     conn = psycopg2.connect(DATABASE_URL)
     cursor = conn.cursor()
 
-    # 1. Base tables ensure karein
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS commits (
             commit_hash TEXT PRIMARY KEY,
@@ -148,7 +154,6 @@ def push_to_neon_db(df_commits: pd.DataFrame, df_changes: pd.DataFrame):
         );
     """)
 
-    # 2. Schema sync: Agar is_bug_fix missing hai toh dynamically add karein
     cursor.execute("""
         ALTER TABLE file_changes 
         ADD COLUMN IF NOT EXISTS is_bug_fix INTEGER DEFAULT 0;
@@ -160,7 +165,6 @@ def push_to_neon_db(df_commits: pd.DataFrame, df_changes: pd.DataFrame):
     cursor.execute("TRUNCATE TABLE file_changes RESTART IDENTITY;")
     conn.commit()
 
-    # 3. Clean strings (null bytes remove karna) & Bulk Insert Commits
     commit_rows = [
         (
             str(r["commit_hash"]).replace("\x00", ""),
@@ -177,7 +181,6 @@ def push_to_neon_db(df_commits: pd.DataFrame, df_changes: pd.DataFrame):
         ON CONFLICT (commit_hash) DO NOTHING;
     """, commit_rows, page_size=1000)
 
-    # 4. Clean strings & Bulk Insert File Changes
     change_rows = [
         (
             str(r["commit_hash"]).replace("\x00", ""),
@@ -196,7 +199,7 @@ def push_to_neon_db(df_commits: pd.DataFrame, df_changes: pd.DataFrame):
     conn.commit()
     cursor.close()
     conn.close()
-    print("✅ Commits and File Changes successfully synced to Neon DB!")
+    print("Commits and File Changes successfully synced to Neon DB!")
 
 if __name__ == "__main__":
     REPO_DIR = "data/raw/flask"
