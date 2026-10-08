@@ -254,7 +254,8 @@
             }
         }
 
-        function inspectFile(filePath, loc, complexity, churn, defects) {
+        // Fixed inspectFile to instantly sync form values AND auto-trigger prediction API call
+        async function inspectFile(filePath, loc, complexity, churn, defects) {
             document.getElementById('file_path').value = filePath || "src/module.py";
             document.getElementById('loc').value = loc || 100;
             document.getElementById('cyclomatic_complexity').value = complexity || 5;
@@ -263,6 +264,9 @@
             
             // Smooth scroll to inspector section
             document.getElementById('inspectForm').scrollIntoView({ behavior: 'smooth' });
+
+            // Automatically trigger the prediction API call so right panel matches table queue probability
+            await executePrediction();
         }
 
         async function triggerRepoScan() {
@@ -292,7 +296,8 @@
 
                 if (response.ok) {
                     statusDiv.className = "mt-4 text-sm font-medium px-4 py-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/40 border border-emerald-200 dark:border-emerald-500/40 text-emerald-700 dark:text-emerald-300";
-                    statusDiv.innerText = "✅ " + (data.message || "Repository successfully scanned.") + ` Found ${data.files ? data.files.length : 0} modules.`;
+                    // Fixed duplicate text issue by showing single clean message from data.message
+                    statusDiv.innerText = "✅ " + (data.message || `Repository successfully scanned. Found ${data.files ? data.files.length : 0} modules.`);
 
                     if (data.files && data.files.length > 0) {
                         renderHotspotsTable(data.files);
@@ -353,6 +358,11 @@
 
         async function handleSinglePredict(e) {
             e.preventDefault();
+            await executePrediction();
+        }
+
+        // Shared prediction execution logic for both form submission and table inspector click
+        async function executePrediction() {
             const payload = {
                 loc: parseFloat(document.getElementById('loc').value),
                 cyclomatic_complexity: parseFloat(document.getElementById('cyclomatic_complexity').value),
@@ -384,7 +394,7 @@
                         colorClass = "text-rose-600 dark:text-rose-400";
                         bgBarClass = "bg-rose-500 dark:bg-rose-400";
                         borderClass = "border-rose-500/30";
-                    } else if (prob >= 45) {
+                    } else if (prob >= 40) {
                         riskLabel = "P2 Medium Risk";
                         colorClass = "text-amber-600 dark:text-amber-400";
                         bgBarClass = "bg-amber-500 dark:bg-amber-400";
